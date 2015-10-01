@@ -1,0 +1,48 @@
+containers:
+  cadvisor:
+    scheduler: random
+    availability: per-host
+    instances:
+      min: 1
+      max: 1
+      default: 1
+    config:
+      image: "google/cadvisor:latest"
+      env: {}
+      volumes:
+        - host_volume: /var/run
+          container_volume: /var/run
+          read_only: false
+        - host_volume: /sys
+          container_volume: /sys
+          read_only: true
+        - host_volume: /var/lib/docker/
+          container_volume: var/lib/docker
+          read_only: true
+      ports:
+        - host_port: "8080"
+          protocol: tcp
+          container_port: "8080"
+    host_config:
+      restart_policy: {}
+  prometheus:
+    scheduler: random
+    availability: per-pool
+    instances:
+      min: 1
+      max: 1
+      default: 1
+    config:
+      cmd:
+        - "-config-file=/etc/prometheus/prometheus.yml"
+      image: "stackhub/prometheus:latest"
+      env:
+        SE_CADVISOR_KEY: apps/prom-cadv-cadvisor-8080/containers
+        SE_CADVISOR_RANGE: "/apps/prom-cadv-cadvisor-8080/containers/*"
+        SE_API_TOKEN: e160407e217f6bec
+      ports:
+        - host_port: "9090"
+          protocol: tcp
+          container_port: "9090"
+    host_config:
+      restart_policy: {}
