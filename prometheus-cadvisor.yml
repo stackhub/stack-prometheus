@@ -37,10 +37,9 @@ containers:
         - "-config-file=/etc/prometheus/prometheus.yml"
       image: "stackhub/prometheus:latest"
       env:
-        SE_CADVISOR_KEY: apps/prom-cadv-cadvisor-8080/containers
-        SE_CADVISOR_RANGE: "/apps/prom-cadv-cadvisor-8080/containers/*"
-        SE_API_TOKEN: e160407e217f6bec
-        SE_LEADER_IP: 172.31.33.218
+        SE_API_TOKEN: 0c4c498808fc0b79
+        SE_LEADER_IP: 172.31.19.80
+        SE_SERVICE_DISCOVERY_KEY: prom-cadv-cadvisor-8080
       ports:
         - host_port: "9090"
           protocol: tcp
